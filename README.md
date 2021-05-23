@@ -12,4 +12,5 @@ https://www.pygame.org/news
 
 Run The Code:
 To run the code you simply need to install pygame library with the following command in Windows.
+
 pip install pygame
