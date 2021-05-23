@@ -280,7 +280,6 @@ def move(lst):
 #     lives+=1
 dash=pygame.image.load('youwin.jpg')
 you_lose=pygame.image.load('youlose.jpg')
-back_track=pygame.image.load('back_track.png')
 i=lev_1[0]
 quitt=False
 count=0
