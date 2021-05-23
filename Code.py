@@ -114,7 +114,165 @@ font_details=pygame.font.Font(None,32)
 back_track =font_details.render("DON'T BAACKTRACK",True,(0,0,0))#takes three parameters, text, antialias, colour 
 
          
+def shortestPath(lst):
+    Source=31
+    discovered=[]
+    distance={}
+    q=[]
+    parent={}
+    for i in range(1,226):
+        distance[i]=float("inf")
+        q.append(i)
+    distance[Source]=0
+    #print(distance)
+    while len(q)!=0:
+        nbr=[]
         
+        S=""
+        for i in q:
+            if S=="":
+                S=i
+            if distance[i]<distance[S]:
+                S=i
+        if S%15==0:
+            i=(S-1)//15
+        else:
+            i=S//15
+        j=(S%15)-1
+        if S not in discovered:
+            q.remove(S)
+            discovered.append(S)
+        if S>15 and lst[i-1][j]==0:#not top wall
+            nbr.append(S-15)
+        if S%15!=0 and lst[i][j+1]==0:#not right wall
+            nbr.append(S+1)
+        
+        if S<=15*14 and lst[i+1][j]==0:#not bottom wall
+            nbr.append(S+15)
+        if S%15!=1 and lst[i][j-1]==0:#not left wall
+            nbr.append(S-1)
+        for i in nbr:
+          if i not in discovered:
+            if distance[S]+1<distance[i]:
+                distance[i]=distance[S]+1
+                parent[i]=S
+    path=[]
+    i=195
+    while i!= 31:
+        path.append((parent[i],i))
+        i=parent[i]
+    return path[::-1]
+    #return distance[to]
+path=[]
+for i in lev_1:
+    path.append(shortestPath(i))
+    
+run=True
+x1=0
+y1=80
+countx=0
+county=0
+winning=False
+back_tracking=False
+def move(lst):
+    global x1
+    global y1
+    global run
+    global visited
+    global lives
+    global winning
+    global back_tracking
+    width=40
+    height=40 
+    font_details=pygame.font.Font(None,32)
+    back_track =font_details.render("DON'T BAACKTRACK",True,(0,0,0))#takes three parameters, text, antialias, colour  
+    key_input = pygame.key.get_pressed() 
+    try: 
+     if key_input[pygame.K_LEFT]:
+        if lst[y1//width][(x1-width)//40]==1:
+          if lives!=0:
+            visited=[]
+            x1=0
+            y1=80
+            window.fill((0,0,0))
+            pygame.display.update()
+            lives-=1
+        elif (x1 -width,y1) not in visited:
+            x1 = x1 -width
+            visited.append((x1,y1))
+            print(visited)
+        else:
+            back_tracking=True
+            print("don't backtrack")
+     if key_input[pygame.K_DOWN]:
+        if lst[(y1+height)//width][x1//40]==1:
+          if lives!=0:  
+            visited=[]
+            x1=0
+            y1=80
+            window.fill((0,0,0))
+            pygame.display.update()
+            lives-=1 
+          else:
+              run=False
+        elif (x1,y1 + height) not in visited:
+            y1 = y1 + height
+            visited.append((x1,y1))
+            print(visited)
+        else:
+            back_tracking=True
+            print("don't backtrack")
+     if key_input[pygame.K_UP]:
+        if lst[(y1-height)//width][x1//40]==1:
+          if lives!=0:
+            visited=[]
+            x1=0
+            y1=80
+            window.fill((0,0,0))
+            pygame.display.update()
+            lives-=1
+          else:
+              run=False
+        elif (x1,y1-height) not in visited:
+            y1 = y1-height
+            visited.append((x1,y1))
+            print(visited)
+        else:
+            back_tracking=True
+            print("don't backtrack")
+     if key_input[pygame.K_RIGHT]:
+        if lst[y1//width][(x1+width)//40]==1:
+          if lives!=0:
+            visited=[]
+            x1=0
+            y1=80
+            window.fill((0,0,0))
+            pygame.display.update()
+            lives-=1
+          else:
+              run=False
+        elif (x1 + width,y1) not in visited:
+            x1 = x1 + width
+            visited.append((x1,y1))
+            print(visited)
+        else:
+            back_tracking=True
+            print("don't backtrack")
+     pygame.draw.rect(window,(0,225,0),(x1,y1,width,height))
+     #pygame.display.update()
+     if (x1,y1)==(560, 480):
+         winning=True
+
+    except:
+         winning=True
+         window.fill((225,225,225))
+         pygame.display.update()
+         window.blit(dash,(0,0))
+         
+        
+        
+        
+            
         
         
     
